@@ -10,7 +10,7 @@ var conStrDbSeguranca = builder.Configuration.GetConnectionString("DefaultConnec
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(conStrDbSeguranca));
 
-var conStrDbPrincipal = builder.Configuration.GetConnectionString("Conexao") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var conStrDbPrincipal = builder.Configuration.GetConnectionString("Conexao") ?? throw new InvalidOperationException("Connection string 'Conexao' not found.");
 builder.Services.AddDbContext<Contexto>(options =>
 	options.UseSqlServer(conStrDbPrincipal));
 

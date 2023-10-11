@@ -9,5 +9,6 @@ namespace TaskVerso.Models
 		public DbSet<Categoria> Categorias { get; set; }
 		public DbSet<Prioridade> Prioridades { get; set; }
 		public DbSet<Funcionario> Funcionarios { get; set; }
+		public DbSet<Tarefa> Tarefas { get; set; }
 	}
 }

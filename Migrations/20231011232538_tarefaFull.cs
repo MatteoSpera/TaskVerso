@@ -57,9 +57,9 @@ namespace TaskVerso.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    categoriaId = table.Column<int>(type: "int", nullable: true),
-                    prioridadeId = table.Column<int>(type: "int", nullable: true),
-                    funcionarioId = table.Column<int>(type: "int", nullable: true)
+                    categoriaId = table.Column<int>(type: "int", nullable: false),
+                    prioridadeId = table.Column<int>(type: "int", nullable: false),
+                    funcionarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,17 +68,20 @@ namespace TaskVerso.Migrations
                         name: "FK_Tarefas_Categorias_categoriaId",
                         column: x => x.categoriaId,
                         principalTable: "Categorias",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tarefas_Funcionarios_funcionarioId",
                         column: x => x.funcionarioId,
                         principalTable: "Funcionarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tarefas_Prioridades_prioridadeId",
                         column: x => x.prioridadeId,
                         principalTable: "Prioridades",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

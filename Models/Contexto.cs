@@ -7,5 +7,6 @@ namespace TaskVerso.Models
 		public Contexto(DbContextOptions<Contexto> options): base(options) { }
 
 		public DbSet<Categoria> Categorias { get; set; }
+		public DbSet<Prioridade> Prioridades { get; set; }
 	}
 }

@@ -13,5 +13,7 @@ namespace TaskVerso.Models
 		[StringLength(30)]
 		public string Nivel { get; set; }
 
+		[InverseProperty("Prioridade")]
+		public List<Tarefa> Tarefas { get; set; }
 	}
 }

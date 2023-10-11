@@ -13,5 +13,7 @@ namespace TaskVerso.Models
 		[StringLength(30)]
 		public string Nome { get; set; }
 
+		[InverseProperty("Funcionario")]
+		public List<Tarefa> Tarefas { get; set; }
 	}
 }

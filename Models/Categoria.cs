@@ -12,5 +12,8 @@ namespace TaskVerso.Models
 		[Required]
 		[StringLength(40)]
 		public string Nome { get; set; }
+
+		[InverseProperty("Categoria")]
+		public List<Tarefa> Tarefas { get; set; }
 	}
 }

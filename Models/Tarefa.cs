@@ -14,10 +14,16 @@ namespace TaskVerso.Models
 		[Display(Name = "Concluída")]
 		public bool Status {  get; set; }
 
+		[Display(Name = "Categoria")]
+		[ForeignKey("categoriaId")]
+		public Categoria Categoria { get; set; }
+
 		[Display(Name = "Prioridade")]
-		public int prioridadeId { get; set; }
 		[ForeignKey("prioridadeId")]
 		public Prioridade Prioridade { get; set; }
 
+		[Display(Name = "Funcionario")]
+		[ForeignKey("funcionarioId")]
+		public Funcionario Funcionario { get; set; }
 	}
 }

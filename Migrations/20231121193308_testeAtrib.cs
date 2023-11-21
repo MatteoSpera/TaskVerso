@@ -5,7 +5,7 @@
 namespace TaskVerso.Migrations
 {
     /// <inheritdoc />
-    public partial class tarefaFull : Migration
+    public partial class testeAtrib : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,7 +29,8 @@ namespace TaskVerso.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Atribuicoes = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

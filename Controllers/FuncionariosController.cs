@@ -53,7 +53,7 @@ namespace TaskVerso.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome")] Funcionario funcionario)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Atribuicoes")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace TaskVerso.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Atribuicoes")] Funcionario funcionario)
         {
             if (id != funcionario.Id)
             {

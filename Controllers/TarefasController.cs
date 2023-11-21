@@ -64,6 +64,10 @@ namespace TaskVerso.Controllers
         {
             if (ModelState.IsValid)
             {
+				Funcionario funcionario = await _context.Funcionarios.FindAsync(tarefa.funcionarioId);
+				funcionario.Atribuicoes++;
+				_context.Update(funcionario);
+
                 _context.Add(tarefa);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

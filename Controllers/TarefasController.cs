@@ -112,8 +112,18 @@ namespace TaskVerso.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    _context.Update(tarefa);
+                {	
+					
+					Tarefa tarefaOld = await _context.Tarefas.FindAsync(tarefa.Id);
+					Funcionario funcionario = await _context.Funcionarios.FindAsync(tarefaOld.funcionarioId);
+					funcionario.Atribuicoes--;
+					_context.Entry(tarefaOld).State = EntityState.Detached;
+
+					funcionario = await _context.Funcionarios.FindAsync(tarefa.funcionarioId);
+					funcionario.Atribuicoes++;
+
+					_context.Update(funcionario);
+					_context.Update(tarefa);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -168,7 +178,11 @@ namespace TaskVerso.Controllers
             var tarefa = await _context.Tarefas.FindAsync(id);
             if (tarefa != null)
             {
-                _context.Tarefas.Remove(tarefa);
+				Funcionario funcionario = await _context.Funcionarios.FindAsync(tarefa.funcionarioId);
+				funcionario.Atribuicoes--;
+
+				_context.Update(funcionario);
+				_context.Tarefas.Remove(tarefa);
             }
             
             await _context.SaveChangesAsync();

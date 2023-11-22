@@ -47,7 +47,7 @@ namespace TaskVerso.Controllers
 			.ToList()
 			group item by new { item.Categoria }
 			into grupo
-			orderby grupo.Count()
+			orderby grupo.Count() descending
 			select new TrfGrpCat
 			{
 				Categoria = grupo.Key.Categoria,

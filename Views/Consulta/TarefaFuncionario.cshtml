@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TaskVerso.Models.Tarefa>
+﻿@model IEnumerable<TaskVerso.Models.Consulta.TarefaQuery>
 
 @{
     ViewData["Title"] = "TarefaFuncionario";
@@ -40,13 +40,13 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                @Html.DisplayFor(modelItem => item.Categoria)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Prioridade.Nivel)
+                @Html.DisplayFor(modelItem => item.Prioridade)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                @Html.DisplayFor(modelItem => item.Funcionario)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

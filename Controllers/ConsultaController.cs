@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TaskVerso.Models;
+using TaskVerso.Models.Consulta;
 
 namespace TaskVerso.Controllers
 {
@@ -21,22 +22,30 @@ namespace TaskVerso.Controllers
 
 		public IActionResult TarefaFuncionario(string filtro)
 		{
-			List<Tarefa> tarefas = new List<Tarefa>();
+			IEnumerable<TarefaQuery> tarefas = new List<TarefaQuery>();
 			if (filtro == null)
 			{
-				tarefas = contexto.Tarefas
+				tarefas = from item in contexto.Tarefas
 				.Include(tarefa => tarefa.Categoria)
 				.Include(tarefa => tarefa.Prioridade)
 				.Include(tarefa => tarefa.Funcionario)
 				.OrderBy(o => o.Funcionario)
 				.ThenBy(o => o.Categoria)
 				.ThenByDescending(o => o.Prioridade)
-				.ToList();
+				.ToList()
+				select new TarefaQuery
+				{
+					Descricao = item.Descricao,
+					Status = item.Status,
+					Categoria = item.Categoria.Nome,
+					Prioridade = item.Prioridade.Nivel,
+					Funcionario = item.Funcionario.Nome
+				}; 
 				
 			}
 			else
 			{
-				tarefas = contexto.Tarefas
+				tarefas = from item in contexto.Tarefas
 				.Include(tarefa => tarefa.Categoria)
 				.Include(tarefa => tarefa.Prioridade)
 				.Include(tarefa => tarefa.Funcionario)
@@ -44,7 +53,15 @@ namespace TaskVerso.Controllers
 				.ThenBy(o => o.Categoria)
 				.ThenByDescending(o => o.Prioridade)
 				.Where(tarefa => tarefa.Funcionario.Nome.Contains(filtro)) //mostra apenas tarefas que estejam atribuidas ao funcionario buscado
-				.ToList();
+				.ToList()
+				select new TarefaQuery
+				{
+					Descricao = item.Descricao,
+					Status = item.Status,
+					Categoria = item.Categoria.Nome,
+					Prioridade = item.Prioridade.Nivel,
+					Funcionario = item.Funcionario.Nome
+				}; 
 			}
 			return View(tarefas);
 		}

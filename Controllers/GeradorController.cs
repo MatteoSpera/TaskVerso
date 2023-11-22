@@ -23,9 +23,6 @@ namespace TaskVerso.Controllers
 				"Miguel", "Esther", "Bryan", "Emanuelly", "Joaquim", "Rebeca", "Vitor", "Ana", "Thiago", "Lavínia", "Antônio", "Vitória", "Davi", "Bianca", "Francisco", "Catarina", "Enzo", "Larissa", "Bruno", "Maria", "Emanuel", "Fernanda", "Gabriel", "Amanda", "Ian", "Alícia", "Lucas", "Carolina", "Rodrigo", "Agatha", "Otávio", "Gabrielly"
 			};
 
-			//contexto.Database.ExecuteSqlRaw("delete from funcionarios"); // apaga tudo da tabela funcionarios
-			//contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('funcionarios', RESEED, 0)"); //reseta a seed 
-
 			for(int i = 0; i < 10; i++) 
 			{
 				int n = contexto.Funcionarios.Count();
@@ -36,15 +33,11 @@ namespace TaskVerso.Controllers
 			}
 			contexto.SaveChanges();
 
-			return View(contexto.Funcionarios.OrderBy(o => o.Id).ToList());
+			return RedirectToAction("Index", "Funcionarios");
 		}
 
 		public IActionResult Categorias()
 		{
-
-			//contexto.Database.ExecuteSqlRaw("delete from categorias"); // apaga tudo da tabela categorias
-			//contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('categorias', RESEED, 0)"); //reseta a seed 
-
 
 			for (int i = 0; i < 10; i++)
 			{
@@ -55,7 +48,7 @@ namespace TaskVerso.Controllers
 			}
 			contexto.SaveChanges();
 
-			return View(contexto.Categorias.OrderBy(o => o.Id).ToList());
+			return RedirectToAction("Index", "Categorias");
 		}
 
 		public IActionResult Prioridades()
@@ -63,19 +56,20 @@ namespace TaskVerso.Controllers
 			contexto.Database.ExecuteSqlRaw("delete from prioridades"); // apaga tudo da tabela prioridades
 			contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('prioridades', RESEED, 0)"); //reseta a seed 
 
+			string[] vPrioridades = { "Baixa", "Média", "Alta", "Urgente" };
+
 			Prioridade prioridade = new Prioridade();
 
-
-			for (int i = 0; i < 3; i++)
+			foreach(string nivel in vPrioridades)
 			{
 				prioridade = new Prioridade();
-				prioridade.Nivel = "Prioridade " + (i + 1).ToString();
+				prioridade.Nivel = nivel;
 				contexto.Prioridades.Add(prioridade);
 			}
 
 			contexto.SaveChanges();
 
-			return View(contexto.Prioridades.OrderBy(o => o.Id).ToList());
+			return RedirectToAction("Index", "Prioridades");
 
 		}
 
@@ -107,7 +101,7 @@ namespace TaskVerso.Controllers
 				.Include(tarefa => tarefa.Prioridade)
 				.Include(tarefa => tarefa.Funcionario)
 				.OrderBy(o => o.Id).ToList();
-				return View(trf);
+				return RedirectToAction("Index", "Tarefas");
 			}
 			else
 			{
@@ -118,20 +112,47 @@ namespace TaskVerso.Controllers
 			
 		}
 
-		public IActionResult Limpar() 
+		public IActionResult LimpaTarefas()
 		{
 			contexto.Database.ExecuteSqlRaw("delete from tarefas"); // apaga tudo da tabela prioridades
 			contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('tarefas', RESEED, 0)"); //reseta a seed 
+			contexto.SaveChanges();
+			return RedirectToAction("Index", "Tarefas");
+		}
+
+		public IActionResult LimpaPrioridades()
+		{
 			contexto.Database.ExecuteSqlRaw("delete from prioridades"); // apaga tudo da tabela prioridades
 			contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('prioridades', RESEED, 0)"); //reseta a seed 
+			contexto.SaveChanges();
+			return RedirectToAction("Index", "Prioridades");
+		}
+
+		public IActionResult LimpaCategorias()
+		{
 			contexto.Database.ExecuteSqlRaw("delete from categorias"); // apaga tudo da tabela categorias
 			contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('categorias', RESEED, 0)"); //reseta a seed 
+			contexto.SaveChanges();
+			return RedirectToAction("Index", "Categorias");
+		}
+
+		public IActionResult LimpaFuncionarios()
+		{
 			contexto.Database.ExecuteSqlRaw("delete from funcionarios"); // apaga tudo da tabela funcionarios
 			contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('funcionarios', RESEED, 0)"); //reseta a seed 
+			contexto.SaveChanges();
+			return RedirectToAction("Index", "Funcionarios");
+		}
 
+		public IActionResult Limpar() 
+		{
+			LimpaTarefas();
+			LimpaPrioridades();
+			LimpaCategorias();
+			LimpaFuncionarios();
 			contexto.SaveChanges();
 
-			return View(); 
+			return RedirectToAction("Index", "Tarefas");
 		}
 
 		public IActionResult Completo()
@@ -141,7 +162,7 @@ namespace TaskVerso.Controllers
 			this.Categorias();
 			this.Prioridades();
 			this.Tarefas();
-			return View();
+			return RedirectToAction("Index", "Tarefas");
 		}
 
 	}

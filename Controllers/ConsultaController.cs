@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TaskVerso.Models;
 
 namespace TaskVerso.Controllers
@@ -17,15 +19,34 @@ namespace TaskVerso.Controllers
 			return View();
 		}
 
-		public IActionResult TarefaFuncionario(string busca)
+		public IActionResult TarefaFuncionario(string filtro)
 		{
-			var trf = contexto.Tarefas
+			List<Tarefa> tarefas = new List<Tarefa>();
+			if (filtro == null)
+			{
+				tarefas = contexto.Tarefas
 				.Include(tarefa => tarefa.Categoria)
 				.Include(tarefa => tarefa.Prioridade)
 				.Include(tarefa => tarefa.Funcionario)
-				.Where(tarefa => tarefa.Funcionario.Nome.Contains(busca)) //mostra apenas tarefas que estejam atribuidas ao funcionario de id 3
+				.OrderBy(o => o.Funcionario)
+				.ThenBy(o => o.Categoria)
+				.ThenByDescending(o => o.Prioridade)
 				.ToList();
-			return View(trf);
+				
+			}
+			else
+			{
+				tarefas = contexto.Tarefas
+				.Include(tarefa => tarefa.Categoria)
+				.Include(tarefa => tarefa.Prioridade)
+				.Include(tarefa => tarefa.Funcionario)
+				.OrderBy(o => o.Funcionario)
+				.ThenBy(o => o.Categoria)
+				.ThenByDescending(o => o.Prioridade)
+				.Where(tarefa => tarefa.Funcionario.Nome.Contains(filtro)) //mostra apenas tarefas que estejam atribuidas ao funcionario buscado
+				.ToList();
+			}
+			return View(tarefas);
 		}
 	}
 }

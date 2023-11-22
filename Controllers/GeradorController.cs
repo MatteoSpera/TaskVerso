@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskVerso.Models;
 
 namespace TaskVerso.Controllers
 {
+	[Authorize]
 	public class GeradorController : Controller
 	{
 		private readonly Contexto contexto;

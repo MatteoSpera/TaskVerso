@@ -17,15 +17,20 @@ namespace TaskVerso.Controllers
 
 		public IActionResult Funcionarios()
 		{
-			
+			var rand = new Random();
+			IEnumerable<string> Nomes = new List<string>
+			{
+				"Miguel", "Esther", "Bryan", "Emanuelly", "Joaquim", "Rebeca", "Vitor", "Ana", "Thiago", "Lavínia", "Antônio", "Vitória", "Davi", "Bianca", "Francisco", "Catarina", "Enzo", "Larissa", "Bruno", "Maria", "Emanuel", "Fernanda", "Gabriel", "Amanda", "Ian", "Alícia", "Lucas", "Carolina", "Rodrigo", "Agatha", "Otávio", "Gabrielly"
+			};
+
 			//contexto.Database.ExecuteSqlRaw("delete from funcionarios"); // apaga tudo da tabela funcionarios
 			//contexto.Database.ExecuteSqlRaw("DBCC CHECKIDENT('funcionarios', RESEED, 0)"); //reseta a seed 
 
-			for(int i = 0; i < 10; i++)
+			for(int i = 0; i < 10; i++) 
 			{
 				int n = contexto.Funcionarios.Count();
 				Funcionario funcionario = new Funcionario();
-				funcionario.Nome = "Funcionario " + (n+i+1).ToString(); //cria 10 novos funcionarios numerados a partir da quantia ja existente
+				funcionario.Nome = Nomes.ElementAt(rand.Next(Nomes.Count())); 
 				funcionario.Atribuicoes = 0;
 				contexto.Funcionarios.Add(funcionario);
 			}

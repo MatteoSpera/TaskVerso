@@ -11,8 +11,6 @@ namespace TaskVerso.Models
 		public DbSet<Prioridade> Prioridades { get; set; }
 		public DbSet<Funcionario> Funcionarios { get; set; }
 		public DbSet<Tarefa> Tarefas { get; set; }
-		public DbSet<TaskVerso.Models.Consulta.TarefaQuery> TarefaQuery { get; set; }
-		public DbSet<TaskVerso.Models.Consulta.FuncionarioPorcent> FuncionarioPorcent { get; set; }
-		public DbSet<TaskVerso.Models.Consulta.TrfGrpCat> TrfGrpCat { get; set; }
+		
 	}
 }

@@ -1,8 +1,48 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "TaskVerso";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center vh-95 d-flex flex-column align-items-center justify-content-center">
+	<h1 class="display-4">TaskVerso</h1>
+	<br />
+	<h2>Gerar Novos Itens</h2>
+	<div>
+		<button type="button" class="btn btn-success">
+			<a class="text-white" asp-action="Completo" asp-controller="Gerador">Gerar Tudo</a>
+		</button>
+		<button type="button" class="btn btn-primary">
+			<a class="text-white" asp-action="Funcionarios" asp-controller="Gerador">Gerar Funcionários</a>
+		</button>
+		<button type="button" class="btn btn-primary">
+			<a class="text-white" asp-action="Categorias" asp-controller="Gerador">Gerar Categorias</a>
+		</button>
+		<button type="button" class="btn btn-primary">
+			<a class="text-white" asp-action="Prioridades" asp-controller="Gerador">Gerar Prioridades</a>
+		</button>
+		<button type="button" class="btn btn-primary">
+			<a class="text-white" asp-action="Tarefas" asp-controller="Gerador">Gerar Tarefas</a>
+		</button>
+
+	</div>
+
+	<br />
+	<h2>Apagar Itens</h2>
+	<div>
+		<button type="button" class="btn btn-danger">
+			<a class="text-white" asp-action="Limpar" asp-controller="Gerador">Apagar Tudo</a>
+		</button>
+		<button type="button" class="btn btn-danger">
+			<a class="text-white" asp-action="LimpaFuncionarios" asp-controller="Gerador">Apagar Todos Funcionários</a>
+		</button>
+		<button type="button" class="btn btn-danger">
+			<a class="text-white" asp-action="LimpaCategorias" asp-controller="Gerador">Apagar Todas Categorias</a>
+		</button>
+		<button type="button" class="btn btn-danger">
+			<a class="text-white" asp-action="LimpaPrioridades" asp-controller="Gerador">Apagar Todas Prioridades</a>
+		</button>
+		<button type="button" class="btn btn-danger">
+			<a class="text-white" asp-action="LimpaTarefas" asp-controller="Gerador">Apagar Todas Tarefas</a>
+		</button>
+
+	</div>
 </div>

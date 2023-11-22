@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using TaskVerso.Models;
 using TaskVerso.Models.Consulta;
@@ -28,6 +29,36 @@ namespace TaskVerso.Controllers
             return View(await contexto.ToListAsync());
         }
 
+		public IActionResult grpByCat()
+		{
+			IEnumerable<TarefaQuery> lstTarefas =
+			from item in _context.Tarefas
+				.Include(tarefa => tarefa.Categoria)
+				.OrderBy(o => o.Categoria)
+				.ToList()
+			select new TarefaQuery
+			{
+				Descricao = item.Descricao,
+				Categoria = item.Categoria.Nome
+			};
+
+			IEnumerable<TrfGrpCat> grpTarefas =
+			from item in lstTarefas
+			.ToList()
+			group item by new { item.Categoria }
+			into grupo
+			orderby grupo.Count()
+			select new TrfGrpCat
+			{
+				Categoria = grupo.Key.Categoria,
+				Quantidade = grupo.Count()
+
+			};
+
+
+			return View(grpTarefas);
+		}
+
 		public IActionResult TarefaFuncionario(string filtro)
 		{
 			IEnumerable<TarefaQuery> tarefas = new List<TarefaQuery>();
@@ -41,14 +72,14 @@ namespace TaskVerso.Controllers
 				.ThenBy(o => o.Categoria)
 				.ThenByDescending(o => o.Prioridade)
 				.ToList()
-						  select new TarefaQuery
-						  {
-							  Descricao = item.Descricao,
-							  Status = item.Status,
-							  Categoria = item.Categoria.Nome,
-							  Prioridade = item.Prioridade.Nivel,
-							  Funcionario = item.Funcionario.Nome
-						  };
+				select new TarefaQuery
+				{
+					Descricao = item.Descricao,
+					Status = item.Status,
+					Categoria = item.Categoria.Nome,
+					Prioridade = item.Prioridade.Nivel,
+					Funcionario = item.Funcionario.Nome
+				};
 
 			}
 			else
@@ -62,14 +93,14 @@ namespace TaskVerso.Controllers
 				.ThenByDescending(o => o.Prioridade)
 				.Where(tarefa => tarefa.Funcionario.Nome.Contains(filtro)) //mostra apenas tarefas que estejam atribuidas ao funcionario buscado
 				.ToList()
-						  select new TarefaQuery
-						  {
-							  Descricao = item.Descricao,
-							  Status = item.Status,
-							  Categoria = item.Categoria.Nome,
-							  Prioridade = item.Prioridade.Nivel,
-							  Funcionario = item.Funcionario.Nome
-						  };
+				select new TarefaQuery
+				{
+					Descricao = item.Descricao,
+					Status = item.Status,
+					Categoria = item.Categoria.Nome,
+					Prioridade = item.Prioridade.Nivel,
+					Funcionario = item.Funcionario.Nome
+				};
 			}
 			return View(tarefas);
 		}

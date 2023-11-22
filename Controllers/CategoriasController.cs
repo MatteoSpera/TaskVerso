@@ -20,14 +20,16 @@ namespace TaskVerso.Controllers
             _context = context;
         }
 
-        // GET: Categorias
-        public async Task<IActionResult> Index()
+		[AllowAnonymous]
+		// GET: Categorias
+		public async Task<IActionResult> Index()
         {
+				
               return View(await _context.Categorias.ToListAsync());
         }
-
-        // GET: Categorias/Details/5
-        public async Task<IActionResult> Details(int? id)
+		[AllowAnonymous]
+		// GET: Categorias/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Categorias == null)
             {

@@ -23,14 +23,14 @@ namespace TaskVerso.Controllers
         {
             _context = context;
         }
-
-        // GET: Tarefas
-        public async Task<IActionResult> Index()
+		[AllowAnonymous]
+		// GET: Tarefas
+		public async Task<IActionResult> Index()
         {
             var contexto = _context.Tarefas.Include(t => t.Categoria).Include(t => t.Funcionario).Include(t => t.Prioridade);
             return View(await contexto.ToListAsync());
         }
-
+		[AllowAnonymous]
 		public IActionResult grpByCat()
 		{
 			IEnumerable<TarefaQuery> lstTarefas =
@@ -59,7 +59,7 @@ namespace TaskVerso.Controllers
 
 			return View(grpTarefas);
 		}
-
+		[AllowAnonymous]
 		public IActionResult pivotCat()
 		{
 			IEnumerable<TarefaQuery> lstTarefas =
@@ -106,7 +106,7 @@ namespace TaskVerso.Controllers
 
 			return View(lstPivot);
 		}
-
+		[AllowAnonymous]
 		public IActionResult TarefaFuncionario(string filtro)
 		{
 			IEnumerable<TarefaQuery> tarefas = new List<TarefaQuery>();

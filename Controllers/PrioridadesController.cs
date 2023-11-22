@@ -19,15 +19,15 @@ namespace TaskVerso.Controllers
         {
             _context = context;
         }
-
-        // GET: Prioridades
-        public async Task<IActionResult> Index()
+		[AllowAnonymous]
+		// GET: Prioridades
+		public async Task<IActionResult> Index()
         {
               return View(await _context.Prioridades.ToListAsync());
         }
-
-        // GET: Prioridades/Details/5
-        public async Task<IActionResult> Details(int? id)
+		[AllowAnonymous]
+		// GET: Prioridades/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Prioridades == null)
             {

@@ -21,6 +21,7 @@ namespace TaskVerso.Controllers
             _context = context;
         }
 
+		[AllowAnonymous]
 		public IActionResult FuncPorcent()
 		{
 			IEnumerable<FuncionarioPorcent> funcionarios = new List<FuncionarioPorcent>();
@@ -35,15 +36,15 @@ namespace TaskVerso.Controllers
 						   };
 			return View(funcionarios);
 		}
-
+		[AllowAnonymous]
 		// GET: Funcionarios
 		public async Task<IActionResult> Index()
         {
               return View(await _context.Funcionarios.ToListAsync());
         }
-
-        // GET: Funcionarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+		[AllowAnonymous]
+		// GET: Funcionarios/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Funcionarios == null)
             {

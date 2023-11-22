@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
+using TaskVerso.Extra;
 using TaskVerso.Models;
 using TaskVerso.Models.Consulta;
 
@@ -52,11 +54,57 @@ namespace TaskVerso.Controllers
 			{
 				Categoria = grupo.Key.Categoria,
 				Quantidade = grupo.Count()
-
 			};
 
 
 			return View(grpTarefas);
+		}
+
+		public IActionResult pivotCat()
+		{
+			IEnumerable<TarefaQuery> lstTarefas =
+			from item in _context.Tarefas
+				.Include(tarefa => tarefa.Categoria)
+				.OrderBy(o => o.Categoria)
+				.ToList()
+			select new TarefaQuery
+			{
+				Descricao = item.Descricao,
+				Categoria = item.Categoria.Nome,
+				Status = item.Status
+			};
+
+			IEnumerable<TrfGrpCatStts> grpTarefas =
+			from item in lstTarefas
+			.ToList()
+			group item by new { item.Categoria, item.Status }
+			into grupo
+			orderby grupo.Count() descending
+			select new TrfGrpCatStts
+			{
+				Categoria = grupo.Key.Categoria,
+				Status = (grupo.Key.Status) ? "Concluída" : "Pendente",
+				Quantidade = grupo.Count()
+
+			};
+
+			var PivotTableTrfStt = grpTarefas.ToList().ToPivotTable(
+				piv => piv.Status, //coluna
+				piv => piv.Categoria, // registro
+				piv => piv.Any() ? piv.Sum(o => o.Quantidade) : 0
+				);
+
+			List<PivotTarefaStatus> lstPivot = new List<PivotTarefaStatus>();
+			lstPivot = (from DataRow coluna in PivotTableTrfStt.Rows
+						select new PivotTarefaStatus()
+						{
+							Categoria = coluna[0].ToString(),
+							Concluidas = Convert.ToInt32(coluna[1]),
+							Pendentes = Convert.ToInt32(coluna[2])
+						}
+						).OrderByDescending(o => o.Pendentes + o.Concluidas).ToList();
+
+			return View(lstPivot);
 		}
 
 		public IActionResult TarefaFuncionario(string filtro)

@@ -6,4 +6,9 @@
 		public string Categoria { get; set; }
         public int Quantidade { get; set; }
     }
+
+    public class  TrfGrpCatStts : TrfGrpCat
+    {
+		public string Status { get; set; }
+	}
 }

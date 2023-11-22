@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaskVerso.Models;
+using TaskVerso.Models.Consulta;
 
 namespace TaskVerso.Controllers
 {
@@ -20,8 +21,23 @@ namespace TaskVerso.Controllers
             _context = context;
         }
 
-        // GET: Funcionarios
-        public async Task<IActionResult> Index()
+		public IActionResult FuncPorcent()
+		{
+			IEnumerable<FuncionarioPorcent> funcionarios = new List<FuncionarioPorcent>();
+			funcionarios = from item in _context.Funcionarios
+
+			.ToList()
+						   select new FuncionarioPorcent
+						   {
+							   Nome = item.Nome,
+							   Atribuicoes = item.Atribuicoes,
+							   conclusao = (item.Atribuicoes > 0) ? ((float)_context.Tarefas.Count(trf => trf.Status && trf.Funcionario == item) / item.Atribuicoes * 100).ToString() + "%" : "NA"
+						   };
+			return View(funcionarios);
+		}
+
+		// GET: Funcionarios
+		public async Task<IActionResult> Index()
         {
               return View(await _context.Funcionarios.ToListAsync());
         }

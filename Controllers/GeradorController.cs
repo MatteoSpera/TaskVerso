@@ -81,32 +81,40 @@ namespace TaskVerso.Controllers
 
 		public IActionResult Tarefas()
 		{
-			var rand = new Random();
-			for (int i = 0; i < 10; i++)
+			if(contexto.Prioridades.Any() && contexto.Categorias.Any() && contexto.Funcionarios.Any()) //Só cria tarefas se houver pelo menos um elemento de cada outra classe
 			{
-				int n = contexto.Tarefas.Count();
-				Tarefa tarefa = new Tarefa();
-				tarefa.Descricao = "Tarefa " + (n + i + 1).ToString(); //cria 10 novas tarefas numeradas a partir da quantia ja existente
-				tarefa.Status = rand.Next(2) != 0; //gera booleano aleatório
-				tarefa.Categoria = contexto.Categorias.ToList().ElementAt(rand.Next(contexto.Categorias.Count())); //Pega Categoria Aleatória da Lista
-				tarefa.Funcionario = contexto.Funcionarios.ToList().ElementAt(rand.Next(contexto.Funcionarios.Count())); //Pega Funcionario aleatorio da lista
-				Funcionario funcionario = contexto.Funcionarios.Find(tarefa.Funcionario.Id);
-				funcionario.Atribuicoes++;
+				var rand = new Random();
+				for (int i = 0; i < 10; i++)
+				{
+					int n = contexto.Tarefas.Count();
+					Tarefa tarefa = new Tarefa();
+					tarefa.Descricao = "Tarefa " + (n + i + 1).ToString(); //cria 10 novas tarefas numeradas a partir da quantia ja existente
+					tarefa.Status = rand.Next(2) != 0; //gera booleano aleatório
+					tarefa.Categoria = contexto.Categorias.ToList().ElementAt(rand.Next(contexto.Categorias.Count())); //Pega Categoria Aleatória da Lista
+					tarefa.Funcionario = contexto.Funcionarios.ToList().ElementAt(rand.Next(contexto.Funcionarios.Count())); //Pega Funcionario aleatorio da lista
+					Funcionario funcionario = contexto.Funcionarios.Find(tarefa.Funcionario.Id);
+					funcionario.Atribuicoes++;
 
-				contexto.Update(funcionario);
-				tarefa.Prioridade = contexto.Prioridades.ToList().ElementAt(rand.Next(contexto.Prioridades.Count())); //Pega Prioridade aleatória da lista
+					contexto.Update(funcionario);
+					tarefa.Prioridade = contexto.Prioridades.ToList().ElementAt(rand.Next(contexto.Prioridades.Count())); //Pega Prioridade aleatória da lista
 
 
-				contexto.Tarefas.Add(tarefa);
-			}
-			contexto.SaveChanges();
-
-			var trf = contexto.Tarefas
+					contexto.Tarefas.Add(tarefa);
+				}
+				contexto.SaveChanges();
+				var trf = contexto.Tarefas
 				.Include(tarefa => tarefa.Categoria)
 				.Include(tarefa => tarefa.Prioridade)
 				.Include(tarefa => tarefa.Funcionario)
 				.OrderBy(o => o.Id).ToList();
-			return View(trf);
+				return View(trf);
+			}
+			else
+			{
+				return View("NoTarefa");
+			}
+
+			
 			
 		}
 

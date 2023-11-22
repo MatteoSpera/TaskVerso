@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaskVerso.Models;
+using TaskVerso.Models.Consulta;
 
 namespace TaskVerso.Controllers
 {
@@ -27,8 +28,54 @@ namespace TaskVerso.Controllers
             return View(await contexto.ToListAsync());
         }
 
-        // GET: Tarefas/Details/5
-        public async Task<IActionResult> Details(int? id)
+		public IActionResult TarefaFuncionario(string filtro)
+		{
+			IEnumerable<TarefaQuery> tarefas = new List<TarefaQuery>();
+			if (filtro == null)
+			{
+				tarefas = from item in _context.Tarefas
+				.Include(tarefa => tarefa.Categoria)
+				.Include(tarefa => tarefa.Prioridade)
+				.Include(tarefa => tarefa.Funcionario)
+				.OrderBy(o => o.Funcionario)
+				.ThenBy(o => o.Categoria)
+				.ThenByDescending(o => o.Prioridade)
+				.ToList()
+						  select new TarefaQuery
+						  {
+							  Descricao = item.Descricao,
+							  Status = item.Status,
+							  Categoria = item.Categoria.Nome,
+							  Prioridade = item.Prioridade.Nivel,
+							  Funcionario = item.Funcionario.Nome
+						  };
+
+			}
+			else
+			{
+				tarefas = from item in _context.Tarefas
+				.Include(tarefa => tarefa.Categoria)
+				.Include(tarefa => tarefa.Prioridade)
+				.Include(tarefa => tarefa.Funcionario)
+				.OrderBy(o => o.Funcionario)
+				.ThenBy(o => o.Categoria)
+				.ThenByDescending(o => o.Prioridade)
+				.Where(tarefa => tarefa.Funcionario.Nome.Contains(filtro)) //mostra apenas tarefas que estejam atribuidas ao funcionario buscado
+				.ToList()
+						  select new TarefaQuery
+						  {
+							  Descricao = item.Descricao,
+							  Status = item.Status,
+							  Categoria = item.Categoria.Nome,
+							  Prioridade = item.Prioridade.Nivel,
+							  Funcionario = item.Funcionario.Nome
+						  };
+			}
+			return View(tarefas);
+		}
+
+		// GET: Tarefas/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Tarefas == null)
             {

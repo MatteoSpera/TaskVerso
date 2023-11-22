@@ -157,7 +157,6 @@ namespace TaskVerso.Controllers
 
 		public IActionResult Completo()
 		{
-			this.Limpar();
 			this.Funcionarios();
 			this.Categorias();
 			this.Prioridades();

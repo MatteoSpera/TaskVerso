@@ -1,0 +1,17 @@
+﻿<h1>Filtrar</h1>
+<h4>Sala</h4>
+<hr>
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="TarefaFuncionario">
+			<!--chama o metodo trf com o parametro busca sendo o valor do input-->
+			Buscar por Funcionário:
+			<input type="text" name="busca" value="">
+			<input type="submit" value="Filtrar" class="btn btn-default">
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>

@@ -9,7 +9,7 @@ namespace TaskVerso.Models
 		[Key]
 		public int Id { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Campo Obrigatório")]
 		[StringLength(40)]
 		public string Nome { get; set; }
 
